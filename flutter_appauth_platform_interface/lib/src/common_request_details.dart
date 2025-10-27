@@ -1,7 +1,8 @@
+import 'package:flutter_appauth_platform_interface/src/https_parameters_configuration_deails.dart';
 import 'accepted_authorization_service_configuration_details.dart';
 
 class CommonRequestDetails
-    with AcceptedAuthorizationServiceConfigurationDetails {
+    with AcceptedAuthorizationServiceConfigurationDetails, HttpsParametersConfigurationDetails {
   /// The client id.
   late String clientId;
 
@@ -16,9 +17,4 @@ class CommonRequestDetails
 
   /// Additional parameters to include in the request.
   Map<String, String>? additionalParameters;
-
-  /// Whether to allow non-HTTPS endpoints.
-  ///
-  /// This property is only applicable to Android.
-  bool? allowInsecureConnections;
 }

@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter_appauth_platform_interface/src/https_parameters_configuration_deails.dart';
+
 import 'authorization_parameters.dart';
 import 'authorization_request.dart';
 import 'authorization_service_configuration.dart';
@@ -6,6 +10,12 @@ import 'common_request_details.dart';
 import 'end_session_request.dart';
 import 'grant_type.dart';
 import 'token_request.dart';
+
+extension X509ChannelSerializer on List<X509Certificate> {
+  String toChannelString() {
+    return map((cert) => cert.pem).join('|');
+  }
+}
 
 Map<String, Object?> _convertCommonRequestDetailsToMap(
     CommonRequestDetails commonRequestDetails) {
@@ -18,7 +28,17 @@ Map<String, Object?> _convertCommonRequestDetailsToMap(
     'scopes': commonRequestDetails.scopes,
     'serviceConfiguration': commonRequestDetails.serviceConfiguration?.toMap(),
     'additionalParameters': commonRequestDetails.additionalParameters,
-    'allowInsecureConnections': commonRequestDetails.allowInsecureConnections,
+  }
+  ..addAll(_convertHttpsParametersToMap(commonRequestDetails));
+}
+
+Map<String, Object?> _convertHttpsParametersToMap(
+  HttpsParametersConfigurationDetails httpsParameters
+) {
+  return <String, Object?>{
+    'allowInsecureConnections': httpsParameters.allowInsecureConnections,
+    'customCaCertificates': httpsParameters.customCaCertificates,
+    'includePublicRootCaCertificates': httpsParameters.includePublicRootCaCertificates,
   };
 }
 
@@ -28,13 +48,13 @@ extension EndSessionRequestMapper on EndSessionRequest {
       'idTokenHint': idTokenHint,
       'postLogoutRedirectUrl': postLogoutRedirectUrl,
       'state': state,
-      'allowInsecureConnections': allowInsecureConnections,
       'additionalParameters': additionalParameters,
       'issuer': issuer,
       'discoveryUrl': discoveryUrl,
       'serviceConfiguration': serviceConfiguration?.toMap(),
       'externalUserAgent': externalUserAgent?.index,
-    };
+    }
+    ..addAll(_convertHttpsParametersToMap(this));
   }
 }
 

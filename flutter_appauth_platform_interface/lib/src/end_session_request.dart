@@ -1,13 +1,16 @@
 import 'package:flutter_appauth_platform_interface/flutter_appauth_platform_interface.dart';
 import 'package:flutter_appauth_platform_interface/src/accepted_authorization_service_configuration_details.dart';
+import 'package:flutter_appauth_platform_interface/src/https_parameters_configuration_deails.dart';
 
 /// Represents an end session request.
-class EndSessionRequest with AcceptedAuthorizationServiceConfigurationDetails {
+class EndSessionRequest with AcceptedAuthorizationServiceConfigurationDetails, HttpsParametersConfigurationDetails {
   EndSessionRequest({
     this.idTokenHint,
     this.postLogoutRedirectUrl,
     this.state,
-    this.allowInsecureConnections = false,
+    bool allowInsecureConnections = false,
+    String customCaCertificates = "",
+    bool includePublicRootCaCertificates = true,
     this.externalUserAgent = ExternalUserAgent.asWebAuthenticationSession,
     this.additionalParameters,
     String? issuer,
@@ -18,6 +21,8 @@ class EndSessionRequest with AcceptedAuthorizationServiceConfigurationDetails {
     this.serviceConfiguration = serviceConfiguration;
     this.issuer = issuer;
     this.discoveryUrl = discoveryUrl;
+
+    setHttpsParameters(allowInsecureConnections, customCaCertificates, includePublicRootCaCertificates);
   }
 
   /// Represents the ID token previously issued to the user.
@@ -32,11 +37,6 @@ class EndSessionRequest with AcceptedAuthorizationServiceConfigurationDetails {
   final String? postLogoutRedirectUrl;
 
   final String? state;
-
-  /// Whether to allow non-HTTPS endpoints.
-  ///
-  /// This property is only applicable to Android.
-  bool allowInsecureConnections;
 
   /// Specifies the external user-agent to use.
   ExternalUserAgent? externalUserAgent;

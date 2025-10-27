@@ -18,6 +18,8 @@ class TokenRequest extends CommonRequestDetails {
     this.authorizationCode,
     this.codeVerifier,
     bool allowInsecureConnections = false,
+    String customCaCertificates = "",
+    bool includePublicRootCaCertificates = true,
   }) {
     this.clientId = clientId;
     this.redirectUrl = redirectUrl;
@@ -27,7 +29,8 @@ class TokenRequest extends CommonRequestDetails {
     this.nonce = nonce;
     this.issuer = issuer;
     this.discoveryUrl = discoveryUrl;
-    this.allowInsecureConnections = allowInsecureConnections;
+
+    setHttpsParameters(allowInsecureConnections, customCaCertificates, includePublicRootCaCertificates);
     assertConfigurationInfo();
   }
 

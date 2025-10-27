@@ -17,6 +17,8 @@ class AuthorizationRequest extends CommonRequestDetails
     Map<String, String>? additionalParameters,
     List<String>? promptValues,
     bool allowInsecureConnections = false,
+    String customCaCertificates = "",
+    bool includePublicRootCaCertificates = true,
     ExternalUserAgent externalUserAgent =
         ExternalUserAgent.asWebAuthenticationSession,
     String? nonce,
@@ -31,10 +33,10 @@ class AuthorizationRequest extends CommonRequestDetails
     this.discoveryUrl = discoveryUrl;
     this.loginHint = loginHint;
     this.promptValues = promptValues;
-    this.allowInsecureConnections = allowInsecureConnections;
     this.externalUserAgent = externalUserAgent;
     this.nonce = nonce;
     this.responseMode = responseMode;
+    setHttpsParameters(allowInsecureConnections, customCaCertificates, includePublicRootCaCertificates);
     assertConfigurationInfo();
   }
 }

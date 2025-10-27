@@ -18,6 +18,8 @@ class AuthorizationTokenRequest extends TokenRequest
     super.discoveryUrl,
     List<String>? promptValues,
     super.allowInsecureConnections,
+    super.customCaCertificates,
+    super.includePublicRootCaCertificates,
     ExternalUserAgent externalUserAgent =
         ExternalUserAgent.asWebAuthenticationSession,
     super.nonce,
